@@ -2,9 +2,10 @@ import math._
 import util._
 import org.jline.terminal.TerminalBuilder
 import java.awt.Color
+import scala.io.Source._
 
 object WordSearch {
-  val defaultSize = 20
+  val defaultSize = 40
   val showCheat = false
   val rand = new Random()
 
@@ -17,7 +18,11 @@ object WordSearch {
     terminal.enterRawMode()
     val reader = terminal.reader()
 
-    val words = Set("hello", "bobcat", "wow", "robin", "mama").map(_.toUpperCase()) // amend to read from word file...
+    val file = new java.io.File(".", "/words")
+    val words = if (file.exists)
+      fromFile(file.getAbsolutePath).getLines.toSet
+    else
+      Set("globe", "earth", "atmosphere", "cloud", "snow", "wind", "star").map(_.toUpperCase())
 
     val grid: Array[Array[Letter]] = Array.fill[Letter](size, size)(Letter('.'))
 
